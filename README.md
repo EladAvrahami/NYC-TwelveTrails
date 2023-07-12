@@ -1,2 +1,2 @@
 # NYC-TwelveTrails
-Presentations Html CSS JS
+Presentations about Html CSS JS for my NYC students 🇺🇸😎
