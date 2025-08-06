@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>מצגת: אלגוריתמים של בינה מלאכותית</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&display=swap');
+        body {
+            font-family: 'Heebo', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            overflow: hidden;
+            position: relative;
+            background-color: #ffffff;
+            page-break-after: always;
+            display: none;
+        }
+        .slide-container.active {
+            display: flex;
+        }
+        .blue-accent {
+            background-color: #0050a1;
+        }
+        .title-text {
+            color: #0050a1;
+        }
+        .subtitle-text {
+            color: #555555;
+        }
+        .content-box {
+            background-color: #f8fafc;
+            border-right: 4px solid #0050a1;
+        }
+        .bullet-point {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .blue-dot {
+            min-width: 10px;
+            height: 10px;
+            background-color: #0050a1;
+            border-radius: 50%;
+            display: inline-block;
+            margin-left: 12px;
+        }
+        .interactive-section {
+            border-top: 2px solid #e2e8f0;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+        }
+        .interactive-section button {
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .interactive-section button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .speaker-button {
+            background-color: #e2e8f0;
+            color: #4a5568;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .speaker-button:hover {
+            background-color: #cbd5e0;
+        }
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #0050a1;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .comparison-box {
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+        }
+        .comparison-header {
+            background-color: #e2e8f0;
+            font-weight: bold;
+        }
+        .code-container {
+            direction: ltr;
+            text-align: left;
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            font-family: monospace;
+            line-height: 1.5;
+        }
+        .code-comment {
+            color: #6a9955;
+        }
+        .code-keyword {
+            color: #569cd6;
+        }
+        .code-string {
+            color: #ce9178;
+        }
+        .code-variable {
+            color: #9cdcfe;
+        }
+        .code-function {
+            color: #dcdcaa;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 450px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+        .flow-arrow {
+            font-size: 2rem;
+            color: #118AB2;
+            align-self: center;
+            margin: 0 1rem;
+        }
+        .kpi-text {
+            font-size: 4rem;
+            font-weight: 700;
+            line-height: 1;
+            color: #06D6A0;
+        }
+    </style>
+</head>
+<body>
+
+<!-- גלריית שקופיות -->
+<div class="slides-wrapper flex flex-col items-center">
+    <!-- שקופית 1 -->
+    <div id="slide-1" class="slide-container shadow-lg flex-col active">
+        <!-- פס הדגשה עליון -->
+        <div class="blue-accent h-4 w-full"></div>
+        <div class="flex flex-row flex-1">
+            <!-- Main Content -->
+            <div class="flex flex-col p-12 w-3/5">
+                <!-- Title Area -->
+                <div class="mb-8 flex items-center justify-between">
+                    <div>
+                        <h1 class="text-4xl font-bold title-text leading-tight">יחידת תוכן אינטראקטיבית:</h1>
+                        <h1 class="text-5xl font-bold title-text leading-tight mt-2">אלגוריתמים של בינה מלאכותית</h1>
+                        <h2 class="text-4xl font-bold title-text mt-3">למידה מסיווג פרחי אירוס</h2>
+                    </div>
+                    <button class="speaker-button" onclick="speakSlideContent(1)"><i class="fas fa-volume-up"></i></button>
+                    <div id="spinner-1" class="hidden loading-spinner"></div>
+                </div>
+                <!-- Description -->
+                <div class="mt-8">
+                    <div class="flex items-center">
+                        <span class="blue-dot"></span>
+                        <p class="text-xl subtitle-text">מסע מעשי אל עולם למידת המכונה והסיווג</p>
+                    </div>
+                    <div class="flex items-center mt-3">
+                        <span class="blue-dot"></span>
+                        <p class="text-xl subtitle-text">הבנת עקרונות למידה חישובית דרך דוגמאות מעשיות</p>
+                    </div>
+                    <div class="flex items-center mt-3">
+                        <span class="blue-dot"></span>
+                        <p class="text-xl subtitle-text">מימוש אלגוריתם KNN על מערך נתוני פרחי אירוס קלאסי</p>
+                    </div>
+                </div>
+                <!-- Footer Info -->
+                <div class="mt-auto">
+                    <p class="text-lg text-gray-600">אלעד אברהמי</p>
+                    <p class="text-lg text-gray-600">2025 © כל הזכויות שמורות</p>
+                </div>
+            </div>
+            <!-- Image Section -->
+            <div class="w-2/5 p-6 flex items-center justify-center">
+                <img alt="AI, Machine Learning and Neural Networks" class="max-w-full max-h-96 object-contain" src="https://page.gensparksite.com/slides_images/6798f0a1be159ba95275776131cdd582.png"/>
+            </div>
+        </div>
+        <!-- Bottom Accent Bar -->
+        <div class="blue-accent h-4 w-full mt-auto"></div>
+    </div>
+
+    <!-- שקופית 2: מבוא לבינה מלאכותית ולמידת מכונה -->
+    <div id="slide-2" class="slide-container shadow-lg flex-col">
+        <div class="blue-accent h-4 w-full"></div>
+        <div class="px-12 pt-8 flex items-center justify-between">
+            <h1 class="text-4xl font-bold title-text">מבוא: מהי בינה מלאכותית וכיצד מחשבים לומדים?</h1>
+            <button class="speaker-button" onclick="speakSlideContent(2)"><i class="fas fa-volume-up"></i></button>
+            <div id="spinner-2" class="hidden loading-spinner"></div>
+        </div>
+        <div class="flex flex-row p-8 flex-1">
+            <div class="w-1/2 pr-8">
+                <div class="content-box p-6 rounded-lg shadow-sm">
+                    <p class="text-xl mb-4"><strong>בינה מלאכותית (AI)</strong> הוא תחום רחב המאפשר למחשבים לבצע משימות הדורשות אינטליגנציה אנושית.</p>
+                    <div class="bullet-point">
+                        <span class="blue-dot"></span>
+                        <p class="text-lg"><strong>למידת מכונה (Machine Learning)</strong> היא תת-תחום ב-AI שמאפשר למחשבים "ללמוד" מנתונים במקום להיות מתוכנתים לכל תרחיש.</p>
+                    </div>
+                    <div class="bullet-point">
+                        <span class="blue-dot"></span>
+                        <p class="text-lg"><strong>למידה עמוקה (Deep Learning)</strong> היא שיטת למידה מתקדמת המבוססת על רשתות עצביות, בהשראת פעולת המוח.</p>
+                    </div>
+                </div>
+                <div class="mt-8 px-6 bg-blue-50 border-r-4 border-blue-500 p-4 rounded-lg shadow-sm">
+                    <p class="text-xl font-bold title-text mb-2">כיצד מחשבים לומדים?</p>
+                    <p class="text-lg">המחשב מזהה דפוסים מתוך דוגמאות רבות (Data) ומקבל משוב. ככל שייחשף ליותר דוגמאות, כך ישתפר, בדומה ללמידה של בני אדם.</p>
+                    <p class="text-sm text-gray-600 mt-2">דוגמה: אלגוריתם שצופה בתמונות רבות של כלבים וחתולים, ומקבל משוב, יפתח את היכולת לזהות בעצמו תמונה חדשה של כלב או חתול.</p>
+                </div>
+            </div>
+            <div class="w-1/2 flex flex-col items-center">
+                <img alt="מבנה היררכי של בינה מלאכותית, למידת מכונה ולמידה עמוקה" class="max-w-full max-h-96 object-contain rounded-lg shadow-md mb-6" src="https://page.gensparksite.com/slides_images/dd02c9e89e5c22b2bc3f9136050dda2c.jpg"/>
+                <div class="bg-blue-50 border-r-4 border-blue-500 p-4 rounded-lg shadow-sm w-full">
+                    <h3 class="text-xl font-bold title-text mb-2">יחסי הכלה בין התחומים:</h3>
+                    <p class="text-lg">בינה מלאכותית ⊃ למידת מכונה ⊃ למידה עמוקה</p>
+                    <p class="text-md text-gray-600 mt-2">המעגל החיצוני מכיל את הפנימיים, וכל שכבה מייצגת התמחות הולכת וגוברת.</p>
+                </div>
+            </div>
+        </div>
+        <!-- Footer -->
+        <div class="mt-auto flex justify-between items-center px-12 py-3 bg-gray-100">
+            <div><p class="text-sm text-gray-600">יחידת תוכן אינטראקטיבית: אלגוריתמים של בינה מלאכותית</p></div>
+            <div><p class="text-sm text-gray-600">עמוד 2</p></div>
+        </div>
+        <!-- Bottom Accent Bar -->
+        <div class="blue-accent h-4 w-full"></div>
+    </div>
+    
+    <!-- שקופית 3: AI בחיי היום-יום -->
+    <div id="slide-3" class="slide-container shadow-lg flex-col">
+        <div class="blue-accent h-4 w-full"></div>
+        <div class="px-12 pt-8 flex items-center justify-between">
+            <h1 class="text-4xl font-bold title-text">AI בחיי היום-יום: דוגמאות מגוונות</h1>
+            <button class="speaker-button" onclick="speakSlideContent(3)"><i class="fas fa-volume-up"></i></button>
+            <div id="spinner-3" class="hidden loading-spinner"></div>
+        </div>
+        <div class="flex flex-row p-8 flex-1">
+            <div class="w-full flex flex-col justify-start items-start p-8">
+                <p class="text-2xl font-bold mb-6">מבינה מלאכותית בתעשייה ועד לאפליקציות שכולנו מכירים:</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
+                    <div>
+                        <div class="flex items-center mb-4">
+                            <i class="fas fa-industry text-blue-500 text-3xl ml-3"></i>
+                            <h3 class="text-xl font-bold">תעשייה ורובוטיקה</h3>
+                        </div>
+                        <p class="text-lg leading-relaxed">רובוטים משתמשים ב-AI כדי ללמוד משימות מורכבות, לנתח נתונים מסנסורים ולהתאים את פעולותיהם באופן אוטומטי במפעלים, מחסנים ובנייה.</p>
+                    </div>
+                    <div>
+                        <div class="flex items-center mb-4">
+                            <i class="fas fa-leaf text-green-500 text-3xl ml-3"></i>
+                            <h3 class="text-xl font-bold">חקלאות ובנייה</h3>
+                        </div>
+                        <p class="text-lg leading-relaxed">
+                            AI מנתח תמונות לווין כדי לזהות מחלות בגידולים, ומשתמש בנתונים ממצלמות ורחפנים כדי לנהל פרויקטי בנייה בצורה יעילה ובטוחה יותר.
+                            <a href="https://www.facebook.com/InnovationAuthority/videos/180623483461356/" target="_blank" class="text-blue-500 hover:underline">
+                                לצפייה בסרטון בנושא AI ורחפנים אוטונומיים
+                            </a>
+                        </p>
+                    </div>
+                    <div class="md:col-span-2">
+                        <div class="flex items-center mb-4">
+                            <i class="fas fa-gamepad text-purple-500 text-3xl ml-3"></i>
+                            <h3 class="text-xl font-bold">משחקים וניווט</h3>
+                        </div>
+                        <p class="text-lg leading-relaxed">
+                            במשחקים כמו פוקימון גו, AI לומד מהנתונים שאנו מייצרים (מיקומים, אינטראקציות) כדי לאמן מודל מיפוי שיוצר את המפה הדינמית של המשחק וממקם בה את הפריטים והיצורים.
+                            <a href="https://youtu.be/gMhN-0iwqew?si=ghYXxjaP3PDYbKD4" target="_blank" class="text-blue-500 hover:underline">
+                                לצפייה בסרטון בנושא AI ופוקימון גו
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer -->
+        <div class="mt-auto flex justify-between items-center px-12 py-3 bg-gray-100">
+            <div><p class="text-sm text-gray-600">יחידת תוכן אינטראקטיבית: אלגוריתמים של בינה מלאכותית</p></div>
+            <div><p class="text-sm text-gray-600">עמוד 3</p></div>
+        </div>
+        <div class="blue-accent h-4 w-full"></div>
+    </div>
+    
+    <!-- שקופית 4 -->
+    <div id="slide-4" class="slide-container shadow-lg flex-col">
+        <div class="blue-accent h-4 w-full"></div>
+        <div class="px-12 pt-8 flex items-center justify-between">
+            <h1 class="text-4xl font-bold title-text">שני הסוגים העיקריים של משימות שאלגוריתמים של בינה מלאכותית מנסים לפתור:</h1>
+            <button class="speaker-button" onclick="speakSlideContent(4)"><i class="fas fa-volume-up"></i></button>
+            <div id="spinner-4" class="hidden loading-spinner"></div>
+        </div>
+        <div class="flex flex-row p-8 flex-1">
+            <div class="w-full flex flex-col justify-center items-center p-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl">
+                    <div class="bg-blue-50 p-6 rounded-lg shadow-sm flex flex-col items-center text-center">
+                        <i class="fas fa-tags text-blue-500 text-5xl mb-4"></i>
+                        <h3 class="text-3xl font-bold title-text mb-2">סיווג (Classification)</h3>
+                        <p class="text-lg">שיוך דוגמה לקטגוריה מוגדרת מראש מתוך קבוצה סופית של אפשרויות. התוצאה היא ערך בדיד (למשל, "חתול" או "לא חתול").</p>
+                    </div>
+                    <div class="bg-green-50 p-6 rounded-lg shadow-sm flex flex-col items-center text-center">
+                        <i class="fas fa-chart-line text-green-500 text-5xl mb-4"></i>
+                        <h3 class="text-3xl font-bold title-text mb-2">חיזוי (Prediction)</h3>
+                        <p class="text-lg">אומדן של ערך מספרי רציף על בסיס נתוני קלט. התוצאה היא ערך מספרי (למשל, מחיר בית או טמפרטורה).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer -->
+        <div class="mt-auto flex justify-between items-center px-12 py-3 bg-gray-100">
+            <div><p class="text-sm text-gray-600">יחידת תוכן אינטראקטיבית: אלגוריתמים של בינה מלאכותית</p></div>
+            <div><p class="text-sm text-gray-600">עמוד 4</p></div>
+        </div>
+        <div class="blue-accent h-4 w-full"></div>
+    </div>
+    
+    <!-- שקופית 5: מושגי יסוד - סיווג -->
+    <div id="slide-5" class="slide-container shadow-lg flex-col">
+        <div class="blue-accent h-4 w-full"></div>
+        <div class="px-12 pt-8 flex items-center justify-between">
+            <h1 class="text-4xl font-bold title-text">מושגי יסוד: סיווג (Classification)</h1>
+            <button class="speaker-button" onclick="speakSlideContent(5)"><i class="fas fa-volume-up"></i></button>
+            <div id="spinner-5" class="hidden loading-spinner"></div>
+        </div>
+        <div class="flex flex-row p-8 flex-1">
+            <div class="w-1/2 pr-8">
+                <div class="content-box p-6 rounded-lg shadow-sm">
+                    <p class="text-xl font-bold mb-4">סיווג הוא משימה של מיון פריטים לקטגוריות מוגדרות מראש.</p>
+                    <div class="bullet-point">
+                        <span class="blue-dot"></span>
+                        <p class="text-lg"><strong>התוצאה היא ערך בדיד:</strong> אחת מהאפשרויות שהוגדרו מראש (למשל: "חתול" או "כלב").</p>
+                    </div>
+                    <div class="bullet-point">
+                        <span class="blue-dot"></span>
+                        <p class="text-lg"><strong>דוגמה פשוטה:</strong> מיון סוכריות לצנצנות נפרדות לפי צבע.</p>
+                    </div>
+                    <div class="bullet-point">
+                        <span class="blue-dot"></span>
+                        <p class="text-lg"><strong>דוגמה יומיומית:</strong> אימות "אני לא רובוט" (reCAPTCHA) שמבקש מאיתנו לזהות תמונות של אופניים או רמזורים. פעולה זו עוזרת לשפר את מודלי הסיווג של בינה מלאכותית.</p>
+                    </div>
+                </div>
+                <div class="mt-6 p-4 bg-blue-50 rounded-lg shadow-sm">
+                    <h3 class="text-xl font-bold title-text mb-3">דוגמאות מהעולם האמיתי:</h3>
+                    <ul class="list-disc list-inside text-lg">
+                        <li>סינון ספאם במייל (הודעה היא "ספאם" או "לא ספאם").</li>
+                        <li>זיהוי הונאות פיננסיות (העסקה היא "הונאה" או "לגיטימית").</li>
+                        <li>אבחון רפואי (סריקה היא "נורמלית" או "חריגה").</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="w-1/2 flex flex-col items-center">
+                <img alt="איור של מיון פריטים לקטגוריות" class="max-w-full max-h-96 object-contain rounded-lg shadow-md mb-6" src="https://page.gensparksite.com/slides_images/2074f58b8ace01bef0106922a0528306.webp"/>
+                <a href="https://quickdraw.withgoogle.com/" target="_blank" class="text-blue-500 hover:underline mt-4">
+                    לצפייה במשחק Quick, Draw!
+                </a>
+            </div>
+        </div>
+        <!-- Footer -->
+        <div class="mt-auto flex justify-between items-center px-12 py-3 bg-gray-100">
+            <div><p class="text-sm text-gray-600">יחידת תוכן אינטראקטיבית: אלגוריתמים של בינה מלאכותית</p></div>
+            <div><p class="text-sm text-gray-600">עמוד 5</p></div>
+        </div>
+        <div class="blue-accent h-4 w-full"></div>
+    </div>
+    
+    <!-- שקופית 6: מושגי יסוד - חיזוי/רגרסיה -->
+    <div id="slide-6" class="slide-container shadow-lg flex-col">
+        <div class="blue-accent h-4 w-full"></div>
+        <div class="px-12 pt-8 flex items-center justify-between">
+            <h1 class="text-4xl font-bold title-text">מושגי יסוד: חיזוי (Prediction) – בהקשר של רגרסיה</h1>
+            <button class="speaker-button" onclick="speakSlideContent(6)"><i class="fas fa-volume-up"></i></button>
+            <div id="spinner-6" class="hidden loading-spinner"></div>
+        </div>
+        <div class="flex flex-row p-8 flex-1">
+            <div class="w-1/2 pr-8">
+                <div class="content-box p-6 rounded-lg shadow-sm">
+                    <p class="text-xl font-bold mb-4">חיזוי הוא משימה של אומדן ערך מספרי רציף.</p>
+                    <div class="bullet-point">
+                        <span class="blue-dot"></span>
+                        <p class="text-lg"><strong>התוצאה היא ערך מספרי:</strong> מספר על רצף (למשל: 25.7 מעלות, 1,250,000 ש"ח).</p>
+                    </div>
+                    <div class="bullet-point">
+                        <span class="blue-dot"></span>
+                        <p class="text-lg"><strong>דוגמה פשוטה:</strong> חיזוי מספר הסוכריות בצנצנת על בסיס גודלה.</p>
+                    </div>
+                </div>
+                <div class="mt-6 p-4 bg-blue-50 rounded-lg shadow-sm">
+                    <h3 class="text-xl font-bold title-text mb-3">דוגמאות מהעולם האמיתי:</h3>
+                    <ul class="list-disc list-inside text-lg">
+                        <li>חיזוי מחירי בתים.</li>
+                        <li>תחזית מכירות עתידית.</li>
+                        <li>חיזוי טמפרטורה מדויקת.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="w-1/2 flex flex-col items-center">
+                <img src="https://raw.githubusercontent.com/EladAvrahami/NYC-TwelveTrails/main/irisprediction1.png" alt="גרף של חיזוי רגרסיה" class="max-w-full max-h-96 object-contain rounded-lg shadow-md mb-6" />
+            </div>
+        </div>
+        <!-- Footer -->
+        <div class="mt-auto flex justify-between items-center px-12 py-3 bg-gray-100">
+            <div><p class="text-sm text-gray-600">יחידת תוכן אינטראקטיבית: אלגוריתמים של בינה מלאכותית</p></div>
+            <div><p class="text-sm text-gray-600">עמוד 6</p></div>
+        </div>
+        <div class="blue-accent h-4 w-full"></div>
+    </div>
+    
+    <!-- שקופית 7: אלגוריתם KNN - הדגמה מעשית -->
+    <div id="slide-7" class="slide-container shadow-lg flex-col">
+        <div class="blue-accent h-4 w-full"></div>
+        <div class="px-12 pt-8 flex items-center justify-between">
+            <h1 class="text-4xl font-bold title-text">אלגוריתם K-Nearest Neighbors (KNN) – הדגמה מעשית</h1>
+            <button class="speaker-button" onclick="speakSlideContent(7)"><i class="fas fa-volume-up"></i></button>
+            <div id="spinner-7" class="hidden loading-spinner"></div>
+        </div>
+        <div class="flex flex-row p-8 flex-1">
+            <div class="w-1/2 pr-8">
+                <div class="content-box p-6 rounded-lg shadow-sm">
+                    <p class="text-xl font-bold mb-4">הרעיון המרכזי: "ציפורים ממין אחד נוהגות להתקבץ יחד".</p>
+                    <div class="bullet-point">
+                        <span class="blue-dot"></span>
+                        <p class="text-lg"><strong>אינטואיציה:</strong> נקודות נתונים דומות נוטות להימצא קרוב זו לזו במרחב המאפיינים.</p>
+                    </div>
+                    <div class="bullet-point">
+                        <span class="blue-dot"></span>
+                        <p class="text-lg"><strong>"מערכת הצבעה שכונתית":</strong> כדי לסווג נקודה חדשה, אנו מסתכלים על K השכנים הקרובים ביותר אליה. היא מסווגת לפי הקטגוריה הנפוצה ביותר מבין שכנים אלו.</p>
+                    </div>
+                </div>
+                <div class="mt-8 px-6 bg-blue-50 border-r-4 border-blue-500 p-4 rounded-lg shadow-sm">
+                    <h3 class="text-xl font-bold title-text mb-2">יתרונות וחסרונות KNN:</h3>
+                    <div class="flex items-center mt-3">
+                        <i class="fas fa-plus-circle text-green-600 text-lg ml-3"></i>
+                        <p class="text-lg"><strong>יתרונות:</strong> פשוט להבנה וליישום, אין שלב אימון מקדים</p>
+                    </div>
+                    <div class="flex items-center mt-3">
+                        <i class="fas fa-minus-circle text-red-600 text-lg ml-3"></i>
+                        <p class="text-lg"><strong>חסרונות:</strong> זמן חישוב גבוה עם מספר גדול של דוגמאות, רגיש לבחירת ערך K</p>
+                    </div>
+                </div>
+            </div>
+            <div class="w-1/2 flex flex-col items-center">
+                <img alt="הדגמה ויזואלית של אלגוריתם KNN" class="max-w-full max-h-96 object-contain rounded-lg shadow-md mb-6" src="https://page.gensparksite.com/slides_images/935eb4672d9969fe1b30746ad059a80f.png"/>
+            </div>
+        </div>
+        <!-- Footer -->
+        <div class="mt-auto flex justify-between items-center px-12 py-3 bg-gray-100">
+            <div><p class="text-sm text-gray-600">יחידת תוכן אינטראקטיבית: אלגוריתמים של בינה מלאכותית</p></div>
+            <div><p class="text-sm text-gray-600">עמוד 7</p></div>
+        </div>
+        <div class="blue-accent h-4 w-full"></div>
+    </div>
+    
+    <!-- שקופית 8: אלגוריתם KNN - הסבר פשוט -->
+    <div id="slide-8" class="slide-container shadow-lg flex-col">
+        <div class="blue-accent h-4 w-full"></div>
+        <div class="px-12 pt-8 flex items-center justify-between">
+            <h1 class="text-4xl font-bold title-text">הסבר פשוט: מהו K ואיך הוא בא לידי ביטוי באלגוריתם?</h1>
+            <button class="speaker-button" onclick="speakSlideContent(8)"><i class="fas fa-volume-up"></i></button>
+            <div id="spinner-8" class="hidden loading-spinner"></div>
+        </div>
+        <div class="flex flex-row p-8 flex-1">
+            <div class="w-full flex flex-col justify-center items-center p-8">
+                <p class="text-2xl font-bold text-center mb-4">דמיינו שאתם רוצים להחליט אם שיר חדש הוא "רוק", "פופ" או "היפ-הופ".</p>
+                <div class="bg-white rounded-xl shadow-lg p-6 w-full max-w-4xl mt-4">
+                    <h3 class="text-2xl font-bold text-[#073B4C] mb-4 text-center">השימוש ב-K</h3>
+                    <p class="text-lg leading-relaxed text-center">
+                        ערך ה-`K` באלגוריתם אומר לנו על כמה "שכנים" להתבסס.
+                        אם נבחר `K=3`, המחשב ימצא את שלושת השירים הכי דומים לשיר החדש ויחליט לפי הרוב.
+                    </p>
+                    <div class="mt-6 flex flex-col md:flex-row justify-around items-center text-center">
+                        <div class="p-4">
+                            <div class="bg-[#FFD166] text-white rounded-full w-20 h-20 flex items-center justify-center text-3xl font-bold mb-2">K=1</div>
+                            <h3 class="font-bold text-lg">רגיש מדי לרעש</h3>
+                            <p class="text-sm">המחשב יחליט לפי השכן הקרוב ביותר בלבד. אם השכן הזה הוא יוצא דופן, ההחלטה עלולה להיות שגויה.</p>
+                        </div>
+                        <div class="p-4">
+                            <div class="bg-[#118AB2] text-white rounded-full w-20 h-20 flex items-center justify-center text-3xl font-bold mb-2">K=5</div>
+                            <h3 class="font-bold text-lg">איזון טוב</h3>
+                            <p class="text-sm">רוב השכנים מצביעים, וההחלטה יציבה יותר ולא מושפעת בקלות מדגימה חריגה.</p>
+                        </div>
+                        <div class="p-4">
+                            <div class="bg-[#FF6B6B] text-white rounded-full w-20 h-20 flex items-center justify-center text-3xl font-bold mb-2">K=20</div>
+                            <h3 class="font-bold text-lg">מפספס פרטים</h3>
+                            <p class="text-sm">המחשב מתבסס על שכנים רבים, חלקם פחות רלוונטיים. זה עלול לגרום למודל להתעלם ממאפיינים חשובים.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer -->
+        <div class="mt-auto flex justify-between items-center px-12 py-3 bg-gray-100">
+            <div><p class="text-sm text-gray-600">יחידת תוכן אינטראקטיבית: אלגוריתמים של בינה מלאכותית</p></div>
+            <div><p class="text-sm text-gray-600">עמוד 8</p></div>
+        </div>
+        <div class="blue-accent h-4 w-full"></div>
+    </div>
+    
+    <!-- שקופית 9: הדגמה עם ערכת הנתונים של אירוס -->
+    <div id="slide-9" class="slide-container shadow-lg flex-col">
+        <div class="blue-accent h-4 w-full"></div>
+        <div class="px-12 pt-8 flex items-center justify-between">
+            <h1 class="text-4xl font-bold title-text">הדגמה עם ערכת הנתונים של אירוס</h1>
+            <button class="speaker-button" onclick="speakSlideContent(9)"><i class="fas fa-volume-up"></i></button>
+            <div id="spinner-9" class="hidden loading-spinner"></div>
+        </div>
+        <div class="flex flex-row p-8 flex-1">
+            <div class="w-1/2 pr-8">
+                <div class="content-box p-6 rounded-lg shadow-sm">
+                    <p class="text-xl font-bold mb-4">ערכת הנתונים של פרחי האירוס היא "הלו, וורלד!" של למידת מכונה.</p>
+                    <div class="bullet-point">
+                        <span class="blue-dot"></span>
+                        <p class="text-lg">היא כוללת 150 דגימות של פרחי אירוס משלושה מינים שונים.</p>
+                    </div>
+                    <div class="bullet-point">
+                        <span class="blue-dot"></span>
+                        <p class="text-lg">לכל פרח נמדדו 4 מאפיינים: אורך ורוחב עלי גביע ועלי כותרת.</p>
+                    </div>
+                    <div class="bullet-point">
+                        <span class="blue-dot"></span>
+                        <p class="text-lg">המטרה: לסווג כל פרח לאחד משלושת המינים על בסיס המאפיינים.</p>
+                    </div>
+                </div>
+                <div class="mt-8 p-4 bg-blue-50 rounded-lg shadow-sm">
+                    <p class="text-lg">ערכת הנתונים פשוטה ואידיאלית להבנת האלגוריתם, מכיוון שהיא מאפשרת להתמקד בעקרונות הליבה של הסיווג מבלי להסתבך בנתונים מורכבים.</p>
+                </div>
+            </div>
+            <div class="w-1/2 flex flex-col items-center justify-center">
+                <img alt="Iris Setosa" class="h-32 w-40 object-cover rounded" src="https://page.gensparksite.com/slides_images/675dffb8e414b81462ad5d02e3aa8123.jpg"/>
+                <p class="text-lg font-bold text-center mt-2 mb-4">Setosa</p>
+                <img alt="Iris Versicolor" class="h-32 w-40 object-cover rounded" src="https://page.gensparksite.com/slides_images/0d9c14e9b5769859c71b96e40e024dcf.png"/>
+                <p class="text-lg font-bold text-center mt-2 mb-4">Versicolor</p>
+                <img alt="Iris Virginica" class="h-32 w-40 object-cover rounded" src="https://page.gensparksite.com/slides_images/5d4cf9d66b40d3a4bdbf099ca8a9b399.jpg"/>
+                <p class="text-lg font-bold text-center mt-2 mb-4">Virginica</p>
+            </div>
+        </div>
+        <!-- Footer -->
+        <div class="mt-auto flex justify-between items-center px-12 py-3 bg-gray-100">
+            <div><p class="text-sm text-gray-600">יחידת תוכן אינטראקטיבית: אלגוריתמים של בינה מלאכותית</p></div>
+            <div><p class="text-sm text-gray-600">עמוד 9</p></div>
+        </div>
+        <div class="blue-accent h-4 w-full"></div>
+    </div>
+    
+    <!-- שקופית 10: אינפוגרפיקה חדשה -->
+    <div id="slide-10" class="slide-container shadow-lg flex-col p-8">
+        <div class="blue-accent h-4 w-full"></div>
+        <div class="flex flex-col flex-1 p-4 md:p-8">
+            <header class="text-center mb-6">
+                <h1 class="text-4xl md:text-5xl font-bold text-[#073B4C] mb-2">איך בינה מלאכותית לומדת לזהות פרחים?</h1>
+                <p class="text-lg md:text-xl text-[#118AB2]">הצצה לתהליך סיווג פרחי אירוס באמצעות אלגוריתם K-Nearest Neighbors</p>
+            </header>
+
+            <main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 flex-1">
+                <div class="lg:col-span-1 md:col-span-2 bg-white rounded-xl shadow-lg p-6 flex flex-col justify-center items-center">
+                    <h2 class="text-2xl font-bold text-[#073B4C] mb-4 text-center">פוגשים את הנתונים: פרחי האירוס</h2>
+                    <p class="text-center mb-4">סט הנתונים שלנו מכיל 150 דגימות של פרחים, המחולקות באופן שווה בין שלושה מינים שונים. המטרה שלנו היא ללמד את המחשב להבדיל ביניהם.</p>
+                    <div class="chart-container" style="height: 250px;">
+                        <canvas id="speciesDonutChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-2 md:col-span-2 bg-white rounded-xl shadow-lg p-6">
+                    <h2 class="text-2xl font-bold text-[#073B4C] mb-4 text-center">מה המחשב "רואה"? מאפייני הפרחים</h2>
+                    <p class="text-center mb-4">כדי להבדיל בין המינים, המחשב מודד ארבעה מאפיינים לכל פרח. ההבדלים במדידות האלה הם המפתח לזיהוי.</p>
+                    <div class="chart-container">
+                        <canvas id="featuresBarChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="lg:col-span-3 bg-white rounded-xl shadow-lg p-6">
+                    <h2 class="text-2xl font-bold text-[#073B4C] mb-4 text-center">הקשרים הנסתרים: אורך מול רוחב עלי הכותרת</h2>
+                    <p class="text-center mb-4">כאשר אנו מציגים את הנתונים על גרף, אנו יכולים לראות בבירור כיצד כל מין יוצר "אשכול" נפרד. זה בדיוק מה שהאלגוריתם מנצל כדי לבצע את הסיווג.</p>
+                    <div class="chart-container">
+                        <canvas id="petalScatterChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-3 bg-white rounded-xl shadow-lg p-6">
+                    <h2 class="text-2xl font-bold text-[#073B4C] mb-6 text-center">תהליך הלמידה: שלב אחר שלב</h2>
+                    <div class="flex flex-col md:flex-row justify-around items-center text-center">
+                        <div class="flex flex-col items-center p-4">
+                            <div class="bg-[#FFD166] text-white rounded-full w-20 h-20 flex items-center justify-center text-3xl font-bold mb-2">1</div>
+                            <h3 class="font-bold text-lg">טעינת נתונים</h3>
+                            <p class="text-sm">מייבאים את סט הנתונים של 150 הפרחים.</p>
+                        </div>
+                        <div class="flow-arrow hidden md:block">→</div>
+                        <div class="flex flex-col items-center p-4">
+                            <div class="bg-[#FF6B6B] text-white rounded-full w-20 h-20 flex items-center justify-center text-3xl font-bold mb-2">2</div>
+                            <h3 class="font-bold text-lg">פיצול הנתונים</h3>
+                            <p class="text-sm">מחלקים ל-80% "אימון" ו-20% "מבחן".</p>
+                        </div>
+                        <div class="flow-arrow hidden md:block">→</div>
+                        <div class="flex flex-col items-center p-4">
+                            <div class="bg-[#118AB2] text-white rounded-full w-20 h-20 flex items-center justify-center text-3xl font-bold mb-2">3</div>
+                            <h3 class="font-bold text-lg">אימון המודל</h3>
+                            <p class="text-sm">המודל "לומד" את הדפוסים מנתוני האימון.</p>
+                        </div>
+                        <div class="flow-arrow hidden md:block">→</div>
+                        <div class="flex flex-col items-center p-4">
+                            <div class="bg-[#06D6A0] text-white rounded-full w-20 h-20 flex items-center justify-center text-3xl font-bold mb-2">4</div>
+                            <h3 class="font-bold text-lg">הערכת ביצועים</h3>
+                            <p class="text-sm">בודקים עד כמה המודל מדייק על נתוני המבחן.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="md:col-span-1 bg-white rounded-xl shadow-lg p-6 flex flex-col justify-center items-center text-center">
+                    <h2 class="text-2xl font-bold text-[#073B4C] mb-4">תוצאת המבחן</h2>
+                    <p class="mb-4">המודל נבחן על סט נתונים חדש לחלוטין. רמת הדיוק שלו מראה עד כמה הוא הצליח להכליל את מה שלמד.</p>
+                    <p class="kpi-text">100%</p>
+                    <p class="font-bold text-lg">רמת דיוק</p>
+                </div>
+
+                <!-- New interactive section for Gemini API integration -->
+                <div class="md:col-span-1 lg:col-span-2 bg-white rounded-xl shadow-lg p-6 text-center">
+                    <h2 class="text-2xl font-bold text-[#073B4C] mb-4">איך נראה הפרח שלך? ✨</h2>
+                    <p class="mb-4">הזן את המידות של פרח כדי שה-AI יזהה אותו ויספק תיאור מפורט!</p>
+                    <form id="flowerForm" class="grid grid-cols-1 md:grid-cols-2 gap-4 text-right">
+                        <div>
+                            <label for="sepalLength" class="block text-sm font-bold text-gray-700 mb-1">אורך עלי גביע (ס"מ)</label>
+                            <input type="number" id="sepalLength" step="0.1" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="לדוגמה: 5.1" required>
+                        </div>
+                        <div>
+                            <label for="sepalWidth" class="block text-sm font-bold text-gray-700 mb-1">רוחב עלי גביע (ס"מ)</label>
+                            <input type="number" id="sepalWidth" step="0.1" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="לדוגמה: 3.5" required>
+                        </div>
+                        <div>
+                            <label for="petalLength" class="block text-sm font-bold text-gray-700 mb-1">אורך עלי כותרת (ס"מ)</label>
+                            <input type="number" id="petalLength" step="0.1" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="לדוגמה: 1.4" required>
+                        </div>
+                        <div>
+                            <label for="petalWidth" class="block text-sm font-bold text-gray-700 mb-1">רוחב עלי כותרת (ס"מ)</label>
+                            <input type="number" id="petalWidth" step="0.1" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" placeholder="לדוגמה: 0.2" required>
+                        </div>
+                        <button type="submit" class="md:col-span-2 mt-4 bg-[#FF6B6B] text-white font-bold py-2 px-4 rounded-full shadow-lg hover:bg-[#FF8E8E] transition-colors duration-200">
+                            סווג וקבל תיאור ✨
+                        </button>
+                    </form>
+
+                    <div id="resultContainer" class="mt-6 hidden">
+                        <div id="loadingMessage" class="hidden text-[#118AB2] font-bold">טוען...</div>
+                        <div id="errorMessage" class="hidden text-[#FF6B6B] font-bold">אירעה שגיאה. אנא נסה שוב.</div>
+                        <h3 class="font-bold text-xl text-[#073B4C] mt-4 mb-2">התוצאה:</h3>
+                        <div class="bg-blue-100 border-l-4 border-[#118AB2] text-[#073B4C] p-4 rounded-lg w-full text-right">
+                            <p><strong class="font-bold">המודל זיהה את הפרח כ:</strong> <span id="predictedSpecies" class="text-2xl font-bold text-[#118AB2]"></span></p>
+                            <hr class="my-2 border-blue-200">
+                            <p class="font-bold mb-1">תיאור מה-AI:</p>
+                            <p id="geminiDescription" class="font-mono text-sm"></p>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <footer class="text-center mt-12 text-gray-500">
+                <p>אינפוגרפיקה שנוצרה כדי להמחיש עקרונות בלמידת מכונה.</p>
+                <a href="https://g.co/gemini/share/efbe7b8b47ba" target="_blank" class="text-blue-500 hover:underline mt-2 inline-block">
+                    לצפייה בדוגמה של שימוש ב-Gemini
+                </a>
+            </footer>
+        </div>
+        <div class="mt-auto flex justify-between items-center px-12 py-3 bg-gray-100">
+            <div><p class="text-sm text-gray-600">יחידת תוכן אינטראקטיבית: אלגוריתמים של בינה מלאכותית</p></div>
+            <div><p class="text-sm text-gray-600">עמוד 10</p></div>
+        </div>
+        <div class="blue-accent h-4 w-full"></div>
+    </div>
+    
+    <!-- שקופית 11: קוד עם הערות -->
+    <div id="slide-11" class="slide-container shadow-lg flex-col">
+        <div class="blue-accent h-4 w-full"></div>
+        <div class="px-12 pt-8 flex items-center justify-between">
+            <h1 class="text-4xl font-bold title-text">קוד Python - הסבר מפורט</h1>
+            <button class="speaker-button" onclick="speakSlideContent(11)"><i class="fas fa-volume-up"></i></button>
+            <div id="spinner-11" class="hidden loading-spinner"></div>
+        </div>
+        <div class="flex flex-row p-8 flex-1">
+            <div class="w-full">
+                <div class="code-container">
+                    <span class="code-comment"># אלו הספריות של scikit-learn, חבילה פופולרית ללמידת מכונה ב-Python.</span>
+                    <span class="code-keyword">from</span><span class="code-variable"> sklearn.datasets</span> <span class="code-keyword">import</span><span class="code-function"> load_iris</span>
+                    <span class="code-keyword">from</span><span class="code-variable"> sklearn.model_selection</span> <span class="code-keyword">import</span><span class="code-function"> train_test_split</span>
+                    <span class="code-keyword">from</span><span class="code-variable"> sklearn.neighbors</span> <span class="code-keyword">import</span><span class="code-function"> KNeighborsClassifier</span>
+
+                    <span class="code-comment"># טעינת סט הנתונים של פרחי האירוס</span>
+                    <span class="code-variable">data</span> =<span class="code-function"> load_iris</span>()
+                    <span class="code-variable">X</span> =<span class="code-variable"> data.data</span>  <span class="code-comment"># המאפיינים (אורך/רוחב עלים)</span>
+                    <span class="code-variable">y</span> =<span class="code-variable"> data.target</span> <span class="code-comment"># התוויות (סוג הפרח)</span>
+
+                    <span class="code-comment"># פיצול הנתונים לסט אימון וסט בדיקה (80% אימון, 20% בדיקה)</span>
+                    <span class="code-variable">X_train</span>,<span class="code-variable"> X_test</span>,<span class="code-variable"> y_train</span>,<span class="code-variable"> y_test</span> =<span class="code-function"> train_test_split</span>(<span class="code-variable">X</span>,<span class="code-variable"> y</span>, <span class="code-variable">test_size</span>=0.2,<span class="code-variable"> random_state</span>=42)
+
+                    <span class="code-comment"># יצירת מודל KNN עם K=3</span>
+                    <span class="code-comment"># שינוי המספר לערך גדול יותר של שכנים עשוי לשנות את רמת הדיוק</span>
+                    <span class="code-variable">model</span> =<span class="code-function"> KNeighborsClassifier</span>(<span class="code-variable">n_neighbors</span>=3)
+
+                    <span class="code-comment"># אימון המודל על נתוני האימון</span>
+                    <span class="code-variable">model.fit</span>(<span class="code-variable">X_train</span>,<span class="code-variable"> y_train</span>)
+
+                    <span class="code-comment"># הערכת ביצועי המודל על נתוני הבדיקה</span>
+                    <span class="code-variable">accuracy</span> =<span class="code-variable"> model.score</span>(<span class="code-variable">X_test</span>,<span class="code-variable"> y_test</span>)
+                    <span class="code-keyword">print</span>(<span class="code-string">f"דיוק המודל: {accuracy:.2f}"</span>)
+
+                    <span class="code-comment"># דוגמה לחיזוי על פרח חדש</span>
+                    <span class="code-comment"># פרח חדש עם מאפיינים: אורך עלי גביע=5.1, רוחב=3.5, אורך עלי כותרת=1.4, רוחב=0.2</span>
+                    <span class="code-variable">new_flower_features</span> = [[5.1, 3.5, 1.4, 0.2]] <span class="code-comment"># ניתן לבדוק נתונים של פרחים אחרים</span>
+                    <span class="code-variable">predicted_species</span> =<span class="code-variable"> model.predict</span>(<span class="code-variable">new_flower_features</span>)
+                    <span class="code-keyword">print</span>(<span class="code-string">f"המין שחזה המודל עבור הפרח החדש: {data.target_names[predicted_species][0]}"</span>)
+                    <span class="code-comment"># דוגמא נוספת לאירוס מסוג Virginica: [6.5, 3.0, 5.5, 2]</span>
+                </div>
+            </div>
+        </div>
+        <!-- Footer -->
+        <div class="mt-auto flex justify-between items-center px-12 py-3 bg-gray-100">
+            <div><p class="text-sm text-gray-600">יחידת תוכן אינטראקטיבית: אלגוריתמים של בינה מלאכותית</p></div>
+            <div><p class="text-sm text-gray-600">עמוד 11</p></div>
+        </div>
+        <div class="blue-accent h-4 w-full"></div>
+    </div>
+    
+    <!-- שקופית 12: הסבר על הקוד המשך -->
+    <div id="slide-12" class="slide-container shadow-lg flex-col">
+        <div class="blue-accent h-4 w-full"></div>
+        <div class="px-12 pt-8 flex items-center justify-between">
+            <h1 class="text-4xl font-bold title-text">הסבר רעיוני של הקוד - המשך</h1>
+            <button class="speaker-button" onclick="speakSlideContent(12)"><i class="fas fa-volume-up"></i></button>
+            <div id="spinner-12" class="hidden loading-spinner"></div>
+        </div>
+        <div class="flex flex-row p-8 flex-1">
+            <div class="w-1/2 pr-8">
+                <div class="content-box p-6 rounded-lg shadow-sm">
+                    <p class="text-xl">`KNeighborsClassifier(n_neighbors=3)`: <br/>אנחנו יוצרים את מודל ה-AI שלנו. `n_neighbors=3` אומר למודל להתחשב ב-3 השכנים הקרובים ביותר.</p>
+                    <p class="text-lg mt-4">`model.fit()`: זוהי הפקודה שבה המודל "לומד". עבור KNN, הוא פשוט מאחסן את נתוני האימון בזיכרון.</p>
+                    <p class="text-lg mt-4">`model.score()`: כאן אנחנו בודקים את המודל. הוא משווה את הניחושים שלו על נתוני הבדיקה לתשובות הנכונות, ומחזיר ציון דיוק.</p>
+                    <p class="text-lg mt-4">`print()`: מדפיס את ציון הדיוק הסופי, שהוא מדד לביצועי המודל.</p>
+                </div>
+            </div>
+            <div class="w-1/2 flex flex-col items-center">
+                <div class="interactive-section w-full">
+                    <h3 class="text-xl font-bold title-text mb-2">פעילות: ניסוי ערך K</h3>
+                    <p class="text-lg mb-4">נסו לשנות את ערך `n_neighbors` בקוד (למשל ל-1, 5 או 10) והריצו אותו שוב. איך זה משפיע על הדיוק?</p>
+                    <div class="flex items-center">
+                        <input id="term-input-12" type="text" placeholder="מה ההשפעה של K=1?" class="w-full border rounded-lg px-4 py-2 text-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                        <button id="explain-button-12" onclick="explainTerm12()" class="bg-blue-500 text-white font-bold py-2 px-6 rounded-lg mr-2 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <span id="explain-button-text-12">הסבר</span>
+                            <span id="explain-loading-12" class="hidden loading-spinner mr-2"></span>
+                        </button>
+                    </div>
+                    <div id="explanation-output-12" class="bg-blue-50 mt-4 p-4 rounded-lg text-lg text-gray-800 hidden"></div>
+                </div>
+                <div class="mt-8 p-4 bg-yellow-100 rounded-lg shadow-sm">
+                    <p class="text-lg font-bold">הערה למנחה:</p>
+                    <p class="text-md">`n_neighbors` הוא "היפר-פרמטר". בחירתו משפיעה על התנהגות המודל והיא מהותית לשיפור ביצועיו.</p>
+                </div>
+            </div>
+        </div>
+        <!-- Footer -->
+        <div class="mt-auto flex justify-between items-center px-12 py-3 bg-gray-100">
+            <div><p class="text-sm text-gray-600">יחידת תוכן אינטראקטיבית: אלגוריתמים של בינה מלאכותית</p></div>
+            <div><p class="text-sm text-gray-600">עמוד 12</p></div>
+        </div>
+        <div class="blue-accent h-4 w-full"></div>
+    </div>
+    
+    <!-- שקופית 13: דגשים פדגוגיים -->
+    <div id="slide-13" class="slide-container shadow-lg flex-col">
+        <div class="blue-accent h-4 w-full"></div>
+        <div class="px-12 pt-8 flex items-center justify-between">
+            <h1 class="text-4xl font-bold title-text">דגשים פדגוגיים ופתרון בעיות</h1>
+            <button class="speaker-button" onclick="speakSlideContent(13)"><i class="fas fa-volume-up"></i></button>
+            <div id="spinner-13" class="hidden loading-spinner"></div>
+        </div>
+        <div class="flex flex-row p-8 flex-1">
+            <div class="w-1/2 pr-8">
+                <div class="content-box p-6 rounded-lg shadow-sm">
+                    <p class="text-xl font-bold mb-4">מושגים מרכזיים לחיזוק:</p>
+                    <ul class="list-disc list-inside text-lg space-y-2">
+                        <li>למידה מדוגמאות.</li>
+                        <li>ההבחנה בין סיווג לחיזוי.</li>
+                        <li>אימון מול בדיקה.</li>
+                        <li>חשיבות הדיוק של המודל.</li>
+                    </ul>
+                </div>
+                <div class="mt-6 p-4 bg-yellow-100 rounded-lg shadow-sm">
+                    <p class="text-xl font-bold title-text mb-2">מענה על תפיסות שגויות:</p>
+                    <p class="text-lg"><strong>"האם AI תמיד צודק?"</strong> לא. מודלים לומדים מנתונים ועלולים לטעות. הבנת המגבלות היא קריטית.</p>
+                    <p class="text-lg mt-2"><strong>"האם צריך להיות גאון מתמטי?"</strong> לא. למטרות מבוא, ההבנה האינטואיטיבית חשובה יותר.</p>
+                </div>
+            </div>
+            <div class="w-1/2 flex flex-col items-center">
+                <img src="https://raw.githubusercontent.com/EladAvrahami/NYC-TwelveTrails/main/AI%20lerning%20with%20Python.png" alt="AI Learning with Python" class="max-w-full max-h-96 object-contain rounded-lg shadow-md mb-6" />
+            </div>
+        </div>
+        <!-- Footer -->
+        <div class="mt-auto flex justify-between items-center px-12 py-3 bg-gray-100">
+            <div><p class="text-sm text-gray-600">יחידת תוכן אינטראקטיבית: אלגוריתמים של בינה מלאכותית</p></div>
+            <div><p class="text-sm text-gray-600">עמוד 13</p></div>
+        </div>
+        <div class="blue-accent h-4 w-full"></div>
+    </div>
+    
+    <!-- שקופית 14: פעילויות נוספות -->
+    <div id="slide-14" class="slide-container shadow-lg flex-col">
+        <div class="blue-accent h-4 w-full"></div>
+        <div class="px-12 pt-8 flex items-center justify-between">
+            <h1 class="text-4xl font-bold title-text">פעילויות נוספות מומלצות</h1>
+            <button class="speaker-button" onclick="speakSlideContent(14)"><i class="fas fa-volume-up"></i></button>
+            <div id="spinner-14" class="hidden loading-spinner"></div>
+        </div>
+        <div class="flex flex-row p-8 flex-1">
+            <div class="w-full flex flex-col justify-center p-8">
+                <p class="text-xl font-bold mb-4">פעילות סיווג לא מקוונת ("משחק המיון"):</p>
+                <p class="text-lg">השתמשו בחפצים פיזיים כמו קוביות לגו או סוכריות ובקשו מהחניכים למיין אותם לקבוצות על בסיס מאפיינים שהם יבחרו.</p>
+                
+                <p class="text-xl font-bold mt-8 mb-4">משחקי AI מקוונים:</p>
+                <div class="flex items-center space-x-4 space-x-reverse mt-2">
+                    <i class="fas fa-paint-brush text-blue-500 text-3xl"></i>
+                    <p class="text-lg">"Quick, Draw!" של גוגל: משחק ציור אינטראקטיבי שבו AI מנחש מה מצויר.</p>
+                </div>
+                <div class="flex items-center space-x-4 space-x-reverse mt-4">
+                    <i class="fas fa-brain text-blue-500 text-3xl"></i>
+                    <p class="text-lg">"Semantris": משחק אסוציאציות מילים המופעל על ידי למידת מכונה.</p>
+                </div>
+            </div>
+        </div>
+        <!-- Footer -->
+        <div class="mt-auto flex justify-between items-center px-12 py-3 bg-gray-100">
+            <div><p class="text-sm text-gray-600">יחידת תוכן אינטראקטיבית: אלגוריתמים של בינה מלאכותית</p></div>
+            <div><p class="text-sm text-gray-600">עמוד 14</p></div>
+        </div>
+        <div class="blue-accent h-4 w-full"></div>
+    </div>
+    
+    <!-- שקופית 15: סיכום והמלצות -->
+    <div id="slide-15" class="slide-container shadow-lg flex-col">
+        <div class="blue-accent h-4 w-full"></div>
+        <div class="px-12 pt-8 flex items-center justify-between">
+            <h1 class="text-4xl font-bold title-text">סיכום והמלצות</h1>
+            <button class="speaker-button" onclick="speakSlideContent(15)"><i class="fas fa-volume-up"></i></button>
+            <div id="spinner-15" class="hidden loading-spinner"></div>
+        </div>
+        <div class="flex flex-row p-8 flex-1">
+            <div class="w-1/2 pr-8">
+                <div class="content-box p-6 rounded-lg shadow-sm">
+                    <p class="text-xl font-bold mb-4">הבנה בסיסית שנרכשה:</p>
+                    <ul class="list-disc list-inside text-lg space-y-2">
+                        <li>למידה מדוגמאות.</li>
+                        <li>ההבחנה בין סיווג לרגרסיה.</li>
+                        <li>איך אלגוריתם KNN עובד.</li>
+                        <li>חשיבות בחירת היפר-פרמטרים כמו K.</li>
+                    </ul>
+                </div>
+                <div class="mt-6 p-4 bg-blue-50 rounded-lg shadow-sm">
+                    <p class="text-xl font-bold title-text mb-2">המלצות להמשך למידה:</p>
+                    <ul class="list-disc list-inside text-lg space-y-2">
+                        <li>נסו לחקור פרמטרים נוספים ב-KNN.</li>
+                        <li>עבדו עם ערכות נתונים נוספות.</li>
+                        <li>חקרו אלגוריתמים נוספים בלמידת מכונה.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="w-1/2 flex flex-col items-center">
+                <img src="https://raw.githubusercontent.com/EladAvrahami/NYC-TwelveTrails/main/conclusion.png" alt="איור של סיכום" class="max-w-full max-h-96 object-contain rounded-lg shadow-md mb-6" />
+            </div>
+        </div>
+        <!-- Footer -->
+        <div class="mt-auto flex justify-between items-center px-12 py-3 bg-gray-100">
+            <div><p class="text-sm text-gray-600">יחידת תוכן אינטראקטיבית: אלגוריתמים של בינה מלאכותית</p></div>
+            <div><p class="text-sm text-gray-600">עמוד 15</p></div>
+        </div>
+        <div class="blue-accent h-4 w-full"></div>
+    </div>
+
+    <!-- שקופית 16: סיום (שקופית חדשה) -->
+    <div id="slide-16" class="slide-container shadow-lg flex-col">
+        <div class="blue-accent h-4 w-full"></div>
+        <div class="px-12 pt-8 flex-1 flex flex-col justify-center items-center text-center">
+            <h1 class="text-5xl font-bold title-text leading-tight">תודה רבה!</h1>
+            <p class="text-2xl mt-4 max-w-2xl leading-relaxed">מקווה שנהניתם והחכמתם מהמסע אל עולם הבינה המלאכותית. נשמח לשמוע מכם!</p>
+        </div>
+        <div class="mt-auto flex justify-between items-center px-12 py-3 bg-gray-100">
+            <div><p class="text-sm text-gray-600">יחידת תוכן אינטראקטיבית: אלגוריתמים של בינה מלאכותית</p></div>
+            <div><p class="text-sm text-gray-600">עמוד 16</p></div>
+        </div>
+        <div class="blue-accent h-4 w-full"></div>
+    </div>
+</div>
+
+<!-- כפתורי ניווט -->
+<div class="fixed bottom-10 left-1/2 transform -translate-x-1/2 flex space-x-4">
+    <button id="prev-btn" onclick="changeSlide(-1)" class="bg-gray-200 text-gray-800 font-bold py-2 px-6 rounded-lg shadow-md hover:bg-gray-300 focus:outline-none">
+        <i class="fas fa-chevron-right"></i> קודם
+    </button>
+    <button id="next-btn" onclick="changeSlide(1)" class="bg-blue-500 text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-blue-600 focus:outline-none">
+        הבא <i class="fas fa-chevron-left"></i>
+    </button>
+</div>
+
+<script>
+    let currentSlide = 1;
+    const totalSlides = 16;
+    let audio = null; // משתנה גלובלי לאובייקט האודיו
+
+    // פונקציה לשינוי שקופית
+    function changeSlide(direction) {
+        // מונע ניווט אם יש אודיו מתנגן
+        if (audio) {
+            audio.pause();
+            audio = null;
+        }
+
+        // מסתיר את השקופית הנוכחית
+        const currentSlideElement = document.getElementById(`slide-${currentSlide}`);
+        if (currentSlideElement) {
+            currentSlideElement.classList.remove('active');
+        }
+
+        // מעדכן את מספר השקופית
+        currentSlide += direction;
+        if (currentSlide > totalSlides) {
+            currentSlide = 1;
+        }
+        if (currentSlide < 1) {
+            currentSlide = totalSlides;
+        }
+
+        // מציג את השקופית הבאה
+        const nextSlideElement = document.getElementById(`slide-${currentSlide}`);
+        if (nextSlideElement) {
+            nextSlideElement.classList.add('active');
+        } else {
+            console.error(`שגיאה: לא נמצא אלמנט לשקופית מספר ${currentSlide}`);
+        }
+    }
+
+    // פונקציה ליצירת WAV מנתוני PCM
+    function pcmToWav(pcmData, sampleRate) {
+        const pcmBuffer = pcmData.buffer;
+        const wavBuffer = new ArrayBuffer(44 + pcmBuffer.byteLength);
+        const view = new DataView(wavBuffer);
+        let offset = 0;
+        
+        // RIFF header
+        view.setUint32(offset, 0x52494646, false); // "RIFF"
+        offset += 4;
+        view.setUint32(offset, 36 + pcmBuffer.byteLength, true); // file size
+        offset += 4;
+        view.setUint32(offset, 0x57415645, false); // "WAVE"
+        offset += 4;
+
+        // fmt sub-chunk
+        view.setUint32(offset, 16, true); // sub-chunk size
+        offset += 4;
+        view.setUint16(offset, 1, true); // PCM format
+        offset += 2;
+        view.setUint16(offset, 1, true); // mono
+        offset += 2;
+        view.setUint32(offset, sampleRate, true);
+        offset += 4;
+        view.setUint32(offset, sampleRate * 2, true); // byte rate
+        offset += 4;
+        view.setUint16(offset, 2, true); // block align
+        offset += 2;
+        view.setUint16(offset, 16, true); // bits per sample
+        offset += 2;
+
+        // data sub-chunk
+        view.setUint32(offset, 0x64617461, false); // "data"
+        offset += 4;
+        view.setUint32(offset, pcmBuffer.byteLength, true); // data size
+        offset += 4;
+
+        // Write PCM data
+        const pcmView = new DataView(pcmBuffer);
+        for (let i = 0; i < pcmBuffer.byteLength; i++) {
+            view.setUint8(offset + i, pcmView.getUint8(i));
+        }
+
+        return new Blob([wavBuffer], { type: 'audio/wav' });
+    }
+
+    // פונקציה להמרת base64 ל-ArrayBuffer
+    function base64ToArrayBuffer(base64) {
+        const binaryString = atob(base64);
+        const len = binaryString.length;
+        const bytes = new Uint8Array(len);
+        for (let i = 0; i < len; i++) {
+            bytes[i] = binaryString.charCodeAt(i);
+        }
+        return bytes.buffer;
+    }
+
+    // פונקציה להקראת תוכן השקופית באמצעות Gemini TTS API
+    async function speakSlideContent(slideIndex) {
+        if (audio) {
+            audio.pause();
+            audio = null;
+            return; // לעצור את הדיבור אם כבר פועל
+        }
+
+        const slideElement = document.getElementById(`slide-${slideIndex}`);
+        let textToSpeak = '';
+        
+        // לאסוף את כל הטקסט בשקופית, למעט כפתורים וספינרים
+        const textElements = slideElement.querySelectorAll('h1, h2, h3, p, li, strong, a');
+        textElements.forEach(el => {
+            textToSpeak += el.textContent.trim() + '. ';
+        });
+
+        if (!textToSpeak) {
+            console.log("אין תוכן בשקופית להקראה.");
+            return;
+        }
+
+        const speakerButton = slideElement.querySelector('.speaker-button');
+        const spinner = document.getElementById(`spinner-${slideIndex}`);
+
+        speakerButton.disabled = true;
+        spinner.classList.remove('hidden');
+
+        try {
+            const payload = {
+                contents: [{
+                    parts: [{ text: textToSpeak }]
+                }],
+                generationConfig: {
+                    responseModalities: ["AUDIO"],
+                    speechConfig: {
+                        voiceConfig: {
+                            prebuiltVoiceConfig: { voiceName: "Rasalgethi" }
+                        }
+                    }
+                },
+                model: "gemini-2.5-flash-preview-tts"
+            };
+            const apiKey = ""; 
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`;
+            
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.error.message);
+            }
+
+            const result = await response.json();
+            const part = result?.candidates?.[0]?.content?.parts?.[0];
+            const audioData = part?.inlineData?.data;
+            const mimeType = part?.inlineData?.mimeType;
+
+            if (audioData && mimeType && mimeType.startsWith("audio/")) {
+                const sampleRate = 24000;
+                const pcmData = base64ToArrayBuffer(audioData);
+                const pcm16 = new Int16Array(pcmData);
+                const wavBlob = pcmToWav(pcm16, sampleRate);
+                const audioUrl = URL.createObjectURL(wavBlob);
+                
+                audio = new Audio(audioUrl);
+                audio.play();
+
+                audio.onended = () => {
+                    audio = null;
+                    speakerButton.disabled = false;
+                    spinner.classList.add('hidden');
+                };
+            } else {
+                throw new Error("מבנה התגובה מה-API אינו תקין או שחסרים נתונים.");
+            }
+
+        } catch (error) {
+            console.error("שגיאה בהקראת התוכן:", error);
+            // הצגת הודעת שגיאה במקום alert
+            const explanationOutput = document.getElementById('explanation-output');
+            if(explanationOutput){
+                explanationOutput.textContent = `אירעה שגיאה: ${error.message}`;
+                explanationOutput.classList.remove('hidden');
+            } else {
+                console.error("לא נמצא אלמנט להצגת הודעת שגיאה.");
+            }
+        } finally {
+            speakerButton.disabled = false;
+            spinner.classList.add('hidden');
+        }
+    }
+
+    // פונקציה לקבלת הסבר מ-Gemini API עבור שקופית 12
+    async function explainTerm12() {
+        const slideIndex = 12;
+        const inputElement = document.getElementById('term-input-12');
+        const outputElement = document.getElementById('explanation-output-12');
+        const buttonElement = document.getElementById('explain-button-12');
+        const buttonText = document.getElementById('explain-button-text-12');
+        const loadingSpinner = document.getElementById('explain-loading-12');
+
+        const term = inputElement.value.trim();
+        if (!term) {
+            outputElement.textContent = 'בבקשה הזינו מונח כדי לקבל הסבר.';
+            outputElement.classList.remove('hidden');
+            return;
+        }
+
+        if (outputElement && buttonElement && buttonText && loadingSpinner) {
+            // הפעלת מצב טעינה
+            buttonElement.disabled = true;
+            buttonText.classList.add('hidden');
+            loadingSpinner.classList.remove('hidden');
+            outputElement.classList.add('hidden');
+        }
+
+
+        let chatHistory = [];
+        const prompt = `הסבר את המושג בבינה מלאכותית "${term}" בשפה פשוטה וברורה לתלמידי תיכון. התשובה צריכה להיות קצרה ותמציתית, עד 50 מילים.`;
+        chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+        const payload = { contents: chatHistory };
+        const apiKey = "";
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.error.message);
+            }
+            
+            const result = await response.json();
+            const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
+            
+            if (outputElement && text) {
+                outputElement.textContent = text;
+            } else {
+                throw new Error("התגובה מה-API לא הכילה תוכן.");
+            }
+        } catch (error) {
+            console.error("שגיאה ב-API:", error);
+            if (outputElement) {
+                outputElement.textContent = `אירעה שגיאה: ${error.message}`;
+            }
+        } finally {
+            if (buttonElement && buttonText && loadingSpinner && outputElement) {
+                // החזרת הכפתור למצב רגיל
+                buttonElement.disabled = false;
+                buttonText.classList.remove('hidden');
+                loadingSpinner.classList.add('hidden');
+                outputElement.classList.remove('hidden');
+            }
+        }
+    }
+
+
+    // Logic for the new infographic slide (slide 7)
+    document.addEventListener('DOMContentLoaded', () => {
+        const tooltipPlugin = {
+            tooltip: {
+                callbacks: {
+                    title: function(tooltipItems) {
+                        const item = tooltipItems[0];
+                        let label = item.chart.data.labels[item.dataIndex];
+                        if (Array.isArray(label)) {
+                            return label.join(' ');
+                        } else {
+                            return label;
+                        }
+                    }
+                }
+            }
+        };
+
+        const colors = {
+            red: '#FF6B6B',
+            yellow: '#FFD166',
+            green: '#06D6A0',
+            blue: '#118AB2',
+            darkBlue: '#073B4C'
+        };
+
+        const speciesData = {
+            labels: ['Setosa', 'Versicolor', 'Virginica'],
+            datasets: [{
+                label: 'מספר דגימות',
+                data: [50, 50, 50],
+                backgroundColor: [colors.yellow, colors.green, colors.blue],
+                hoverOffset: 4
+            }]
+        };
+        new Chart(document.getElementById('speciesDonutChart'), {
+            type: 'doughnut',
+            data: speciesData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    ...tooltipPlugin
+                }
+            }
+        });
+
+        const featuresData = {
+            labels: ['אורך עלי גביע', 'רוחב עלי גביע', 'אורך עלי כותרת', 'רוחב עלי כותרת'],
+            datasets: [
+                {
+                    label: 'Setosa',
+                    data: [5.01, 3.43, 1.46, 0.25],
+                    backgroundColor: colors.yellow,
+                },
+                {
+                    label: 'Versicolor',
+                    data: [5.94, 2.77, 4.26, 1.33],
+                    backgroundColor: colors.green,
+                },
+                {
+                    label: 'Virginica',
+                    data: [6.59, 2.97, 5.55, 2.03],
+                    backgroundColor: colors.blue,
+                }
+            ]
+        };
+        new Chart(document.getElementById('featuresBarChart'), {
+            type: 'bar',
+            data: featuresData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'מדידה (ס"מ)'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    ...tooltipPlugin
+                }
+            }
+        });
+
+        const scatterData = {
+            datasets: [{
+                label: 'Setosa',
+                data: [
+                    {x: 1.4, y: 0.2}, {x: 1.3, y: 0.2}, {x: 1.5, y: 0.2}, {x: 1.4, y: 0.2}, {x: 1.7, y: 0.4}, 
+                    {x: 1.5, y: 0.2}, {x: 1.4, y: 0.3}, {x: 1.6, y: 0.2}, {x: 1.4, y: 0.1}, {x: 1.5, y: 0.2} 
+                ],
+                backgroundColor: colors.yellow
+            }, {
+                label: 'Versicolor',
+                data: [
+                    {x: 4.7, y: 1.4}, {x: 4.5, y: 1.5}, {x: 4.9, y: 1.5}, {x: 4.0, y: 1.3}, {x: 4.6, y: 1.5},
+                    {x: 4.5, y: 1.3}, {x: 4.7, y: 1.6}, {x: 3.3, y: 1.0}, {x: 4.6, y: 1.3}, {x: 3.9, y: 1.4}
+                ],
+                backgroundColor: colors.green
+            }, {
+                label: 'Virginica',
+                data: [
+                    {x: 6.0, y: 2.5}, {x: 5.1, y: 1.9}, {x: 5.9, y: 2.1}, {x: 5.6, y: 1.8}, {x: 5.8, y: 2.2},
+                    {x: 6.6, y: 2.1}, {x: 4.5, y: 1.7}, {x: 6.3, y: 1.8}, {x: 5.8, y: 1.8}, {x: 6.1, y: 2.5}
+                ],
+                backgroundColor: colors.blue
+            }]
+        };
+        new Chart(document.getElementById('petalScatterChart'), {
+            type: 'scatter',
+            data: scatterData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'אורך עלי כותרת (ס"מ)'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'רוחב עלי כותרת (ס"מ)'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    ...tooltipPlugin
+                }
+            }
+        });
+
+        // Gemini API and KNN Prediction logic
+        document.getElementById('flowerForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const sepalLength = parseFloat(document.getElementById('sepalLength').value);
+            const sepalWidth = parseFloat(document.getElementById('sepalWidth').value);
+            const petalLength = parseFloat(document.getElementById('petalLength').value);
+            const petalWidth = parseFloat(document.getElementById('petalWidth').value);
+
+            const resultContainer = document.getElementById('resultContainer');
+            const loadingMessage = document.getElementById('loadingMessage');
+            const errorMessage = document.getElementById('errorMessage');
+
+            // Show loading, hide previous results/errors
+            if(resultContainer) resultContainer.classList.remove('hidden');
+            if(loadingMessage) loadingMessage.classList.remove('hidden');
+            if(errorMessage) errorMessage.classList.add('hidden');
+            const predictedSpeciesSpan = document.getElementById('predictedSpecies');
+            const geminiDescriptionP = document.getElementById('geminiDescription');
+            if(predictedSpeciesSpan) predictedSpeciesSpan.textContent = '';
+            if(geminiDescriptionP) geminiDescriptionP.textContent = '';
+
+
+            try {
+                // Hardcoded KNN model prediction for demonstration purposes
+                // A simplified logic based on the iris dataset characteristics
+                let predictedSpeciesIndex;
+                if (petalLength < 2.5) {
+                    predictedSpeciesIndex = 0; // Setosa
+                } else if (petalLength < 5.0 && petalWidth < 1.7) {
+                    predictedSpeciesIndex = 1; // Versicolor
+                } else {
+                    predictedSpeciesIndex = 2; // Virginica
+                }
+                
+                const speciesNames = ['Setosa', 'Versicolor', 'Virginica'];
+                const predictedSpeciesName = speciesNames[predictedSpeciesIndex];
+
+                if(predictedSpeciesSpan) predictedSpeciesSpan.textContent = predictedSpeciesName;
+
+                // Call Gemini API to get a creative description
+                let chatHistory = [];
+                const prompt = `אתה בוטנאי מומחה. כתוב תיאור יצירתי ועובדתי על פרח אירוס מהמין ${predictedSpeciesName}, שגובהו ${sepalLength} ס"מ ורוחבו ${sepalWidth} ס"מ, ואורך עלי הכותרת שלו הוא ${petalLength} ס"מ ורוחבם ${petalWidth} ס"מ. תיאור זה צריך לכלול פרטים בוטניים ולדבר על מראה הפרח, כאילו אתה מתאר אותו לסקרן צעיר.`;
+                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                const payload = { contents: chatHistory };
+                const apiKey = "";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+                let retries = 0;
+                const maxRetries = 5;
+                let response;
+
+                while (retries < maxRetries) {
+                    try {
+                        response = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+                        if (response.status !== 429) {
+                            break;
+                        }
+                        retries++;
+                        const delay = Math.pow(2, retries) * 1000;
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                    } catch (e) {
+                        throw e;
+                    }
+                }
+
+                if (!response.ok) {
+                    throw new Error(`API call failed with status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                const geminiDescription = result.candidates?.[0]?.content?.parts?.[0]?.text;
+
+                if (geminiDescriptionP && geminiDescription) {
+                    geminiDescriptionP.textContent = geminiDescription;
+                } else {
+                    throw new Error('Could not retrieve description from API.');
+                }
+            } catch (error) {
+                console.error("Error during prediction or Gemini API call:", error);
+                if(errorMessage) errorMessage.classList.remove('hidden');
+            } finally {
+                if(loadingMessage) loadingMessage.classList.add('hidden');
+            }
+        });
+    });
+
+    // פונקציה להפעלת השקופית הראשונה בפתיחת הדף
+    document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('slide-1').classList.add('active');
+    });
+
+</script>
+</body>
+</html>
