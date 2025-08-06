@@ -2,7 +2,7 @@
 airbrush - https://www.canva.com/design/DAGudPfBuFQ/B-HIZnf0tk4A_thv0YhVlQ/edit?utm_content=DAGudPfBuFQ&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
 
 
-Presentations about Html CSS JS for my NYC students 🇺🇸😎
+Presentations about Html CSS JS for my NYC students 😎
 
 </br>
 Interactive experiance to start building websits link : </br> https://projects.raspberrypi.org/en/projects/cd-sebento-htmlcss-1
