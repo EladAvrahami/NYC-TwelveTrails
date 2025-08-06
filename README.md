@@ -1,5 +1,7 @@
 # NYC-TwelveTrails
 airbrush - https://www.canva.com/design/DAGudPfBuFQ/B-HIZnf0tk4A_thv0YhVlQ/edit?utm_content=DAGudPfBuFQ&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
+ai algoritem interactive presentation https://g.co/gemini/share/7d35cd0d1bed
+
 
 
 Presentations about Html CSS JS for my NYC students 😎
